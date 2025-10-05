@@ -3,7 +3,7 @@ package algorithms;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShellSortTest {
+public class ShellSortTest {
 
     @Test
     void testEmptyArray() {
