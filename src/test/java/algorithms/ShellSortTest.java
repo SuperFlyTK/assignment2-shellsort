@@ -124,6 +124,14 @@ class ShellSortTest {
         System.out.printf("Standard: %d ns, Optimized: %d ns%n", standardTime, optimizedTime);
     }
 
+    @Test
+    void testNearlySortedArray() {
+        ShellSort sorter = new ShellSort();
+        int[] array = {1, 2, 3, 5, 4, 6, 7, 9, 8}; // Nearly sorted
+        sorter.sort(array, ShellSort.GapSequence.SHELL);
+        assertTrue(ShellSort.isSorted(array));
+    }
+
     private int[] generateLargeArray(int size) {
         Random random = new Random(42);
         int[] array = new int[size];
