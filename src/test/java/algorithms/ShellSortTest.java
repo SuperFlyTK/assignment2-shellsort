@@ -3,7 +3,9 @@ package algorithms;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ShellSortTest {
+import java.util.Random;
+
+class ShellSortTest {
 
     @Test
     void testEmptyArray() {
@@ -87,5 +89,47 @@ public class ShellSortTest {
         assertTrue(tracker.getSwaps() > 0);
         assertTrue(tracker.getArrayAccesses() > 0);
         assertTrue(tracker.getTimeNano() > 0);
+    }
+
+    @Test
+    void testOptimizedSort() {
+        ShellSort sorter = new ShellSort();
+        int[] array = {1, 2, 3, 5, 4, 6, 7, 9, 8}; // Nearly sorted
+
+        // Test optimized version
+        sorter.sortOptimized(array, ShellSort.GapSequence.SHELL);
+        assertTrue(ShellSort.isSorted(array));
+
+        var tracker = sorter.getTracker();
+        assertTrue(tracker.getComparisons() > 0);
+        assertTrue(tracker.getSwaps() > 0);
+    }
+
+    @Test
+    void testOptimizedSortPerformance() {
+        ShellSort sorter = new ShellSort();
+        int[] array1 = generateLargeArray(1000);
+        int[] array2 = array1.clone();
+
+        sorter.sort(array1, ShellSort.GapSequence.SHELL);
+        long standardTime = sorter.getTracker().getTimeNano();
+
+
+        sorter.sortOptimized(array2, ShellSort.GapSequence.SHELL);
+        long optimizedTime = sorter.getTracker().getTimeNano();
+
+        assertTrue(ShellSort.isSorted(array1));
+        assertTrue(ShellSort.isSorted(array2));
+
+        System.out.printf("Standard: %d ns, Optimized: %d ns%n", standardTime, optimizedTime);
+    }
+
+    private int[] generateLargeArray(int size) {
+        Random random = new Random(42);
+        int[] array = new int[size];
+        for (int i = 0; i < size; i++) {
+            array[i] = random.nextInt(size * 10);
+        }
+        return array;
     }
 }

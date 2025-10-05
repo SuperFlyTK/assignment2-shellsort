@@ -60,6 +60,53 @@ public class ShellSort {
         tracker.stopTimer();
     }
 
+    public void sortOptimized(int[] array, GapSequence sequence) {
+        if (array == null) {
+            throw new IllegalArgumentException("Array cannot be null");
+        }
+        if (array.length <= 1) {
+            return;
+        }
+
+        tracker.reset();
+        tracker.startTimer();
+
+        int n = array.length;
+        int[] gaps = generateGapSequence(n, sequence);
+
+        for (int gap : gaps) {
+            if (gap == 0) continue;
+
+            boolean swapped;
+            do {
+                swapped = false;
+                for (int i = gap; i < n; i++) {
+                    int temp = array[i];
+                    tracker.incrementArrayAccesses(1);
+
+                    int j = i;
+                    while (j >= gap) {
+                        tracker.incrementComparisons();
+                        tracker.incrementArrayAccesses(1);
+                        if (array[j - gap] > temp) {
+                            array[j] = array[j - gap];
+                            tracker.incrementArrayAccesses(2);
+                            tracker.incrementSwaps();
+                            swapped = true;
+                            j -= gap;
+                        } else {
+                            break;
+                        }
+                    }
+                    array[j] = temp;
+                    tracker.incrementArrayAccesses(1);
+                }
+            } while (swapped && gap > 1); // Early termination if no swaps
+        }
+
+        tracker.stopTimer();
+    }
+
     private int[] generateGapSequence(int n, GapSequence sequence) {
         switch (sequence) {
             case SHELL:
