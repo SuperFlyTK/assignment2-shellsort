@@ -141,7 +141,7 @@ After running the benchmark, a CSV file is generated with the following columns:
 
 ---
 
-## 🧩 Dependencies
+## Dependencies
 
 | Dependency                | Purpose                          |
 | ------------------------- | -------------------------------- |
